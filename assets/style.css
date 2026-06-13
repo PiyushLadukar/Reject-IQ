@@ -1,0 +1,56 @@
+body{
+    background:#0E1117;
+}
+
+.main{
+    background:#0E1117;
+}
+
+.block-container{
+    padding-top:2rem;
+}
+
+h1{
+    color:#2563EB;
+}
+
+h2{
+    color:#60A5FA;
+}
+
+h3{
+    color:#93C5FD;
+}
+
+div[data-testid="metric-container"]{
+    background:#111827;
+    border:1px solid #1F2937;
+    padding:15px;
+    border-radius:12px;
+}
+
+.stButton>button{
+    width:100%;
+    background:#2563EB;
+    color:white;
+    border:none;
+    border-radius:10px;
+    height:45px;
+    font-weight:bold;
+}
+
+.stButton>button:hover{
+    background:#1D4ED8;
+}
+
+.stDataFrame{
+    border-radius:10px;
+}
+
+section[data-testid="stSidebar"]{
+    background:#111827;
+}
+
+hr{
+    border:1px solid #1F2937;
+}
