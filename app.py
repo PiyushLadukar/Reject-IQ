@@ -1,5 +1,67 @@
 import streamlit as st
 from utils import ui, data_manager
+from utils.auth import login, signup
+
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+
+if "username" not in st.session_state:
+    st.session_state.username = ""
+
+if not st.session_state.logged_in:
+
+    st.title("RejectIQ")
+
+    option = st.radio(
+        "",
+        ["Login", "Signup"]
+    )
+
+    username = st.text_input("Username")
+
+    password = st.text_input(
+        "Password",
+        type="password"
+    )
+
+    if option == "Signup":
+
+        if st.button("Create Account"):
+
+            if signup(
+                username,
+                password
+            ):
+                st.success(
+                    "Account Created Successfully!"
+                )
+
+            else:
+                st.error(
+                    "Username Already Exists!"
+                )
+
+    else:
+
+        if st.button("Login"):
+
+            if login(
+                username,
+                password
+            ):
+
+                st.session_state.logged_in = True
+                st.session_state.username = username
+
+                st.rerun()
+
+            else:
+
+                st.error(
+                    "Invalid Username or Password"
+                )
+
+    st.stop()    
 
 # PAGE CONFIG
 st.set_page_config(
