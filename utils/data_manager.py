@@ -19,7 +19,6 @@ def load_data():
         df = pd.read_csv(PATH)
         if "ID" not in df.columns:
             df.insert(0, "ID", range(1, len(df) + 1))
-        # Ensure Date column exists
         if "Date" in df.columns:
             try:
                 df["Date"] = pd.to_datetime(df["Date"])
@@ -27,7 +26,6 @@ def load_data():
                 pass
         return df
 
-    # empty dataframe schema
     return pd.DataFrame(
         columns=[
             "ID",
@@ -44,7 +42,6 @@ def load_data():
 
 def save_data(df):
     _ensure_dirs()
-    # keep ID as first column
     cols = df.columns.tolist()
     if cols[0] != "ID" and "ID" in cols:
         cols.insert(0, cols.pop(cols.index("ID")))
@@ -63,7 +60,6 @@ def generate_id(df):
 
 
 def detect_duplicates(df, record):
-    # Simple duplicate detection: same Product, City, Salesperson, Reason, and similar Comments
     if df.empty:
         return pd.DataFrame()
 
@@ -77,7 +73,6 @@ def detect_duplicates(df, record):
         mask = mask & (df[k].astype(str).str.lower() == str(record.get(k, "")).lower())
 
     candidates = df[mask]
-    # fuzzy comments check: exact match or substring
     if len(candidates) > 0 and record.get("Comments"):
         candidates = candidates[candidates["Comments"].astype(str).str.contains(str(record.get("Comments", "")).strip(), case=False, na=False)]
 
@@ -155,20 +150,17 @@ def restore_backup(path_to_backup):
 
 
 def upload_csv_file(filelike, merge=True):
-    # filelike: UploadedFile
     try:
         df_new = pd.read_csv(filelike)
     except Exception:
         return None, "invalid_csv"
 
     expected = ["Product", "Age Group", "City", "Salesperson", "Reason", "Comments"]
-    # add Date/ID if missing
     for c in expected:
         if c not in df_new.columns:
             return None, "missing_columns"
 
     df_existing = load_data()
-    # assign IDs to new rows
     start = generate_id(df_existing)
     df_new = df_new.copy()
     df_new["ID"] = range(start, start + len(df_new))
